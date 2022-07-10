@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 require('dotenv').config()
 const express = require('express')
 const app = express()
@@ -5,7 +6,7 @@ var morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
 
-const requestLogger = (request, response, next) => {
+const requestLogger = (request, _response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
   console.log('Body:  ', request.body)
@@ -20,13 +21,13 @@ app.use(express.json())
 app.use(requestLogger)
 
 
-app.get('/info', (request, response) => {
+app.get('/info', (_request, response) => {
   Person
     .find()
     .then((results) => response.send(`<p>Phonebook has info for ${results.length} people</p><p>${new Date()}</p>`))
 })
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (_request, response) => {
   Person
     .find()
     .then(persons => response.json(persons))
@@ -48,7 +49,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.post('/api/persons', morgan(':response'), async (request, response, next) => {
   const body = request.body
   const persons = await Person.find()
-  morgan.token('response', function (request, response) { return JSON.stringify(body) })
+  morgan.token('response', function (_request, _response) { return JSON.stringify(body) })
   if (persons.indexOf(body.name) > 0) {
     return response.status(400).json({ error: 'name must be unique' })
   }
@@ -74,17 +75,17 @@ app.put('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   Person
     .findByIdAndRemove(request.params.id)
-    .then(result => response.status(204).end())
+    .then(_result => response.status(204).end())
     .catch(error => next(error))
 })
 
-const unknownEndpoint = (request, response) => {
+const unknownEndpoint = (_request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
 
-const errorHandler = (error, request, response, next) => {
+const errorHandler = (error, _request, response, next) => {
   console.error('error message: ', error.message)
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
@@ -98,6 +99,7 @@ const errorHandler = (error, request, response, next) => {
 // this has to be the last loaded middleware.
 app.use(errorHandler)
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT
 
 app.listen(PORT, () => {

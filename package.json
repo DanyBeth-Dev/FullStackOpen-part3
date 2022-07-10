@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/DanyBeth-Dev/FullStackOpen-part3#readme",
   "devDependencies": {
+    "eslint": "^8.19.0",
     "nodemon": "^2.0.18"
   },
   "dependencies": {
