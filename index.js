@@ -20,7 +20,7 @@ app.use(morgan('tiny'))
 app.use(express.json())
 app.use(requestLogger)
 
-
+//Routes
 app.get('/info', (_request, response) => {
   Person
     .find()
